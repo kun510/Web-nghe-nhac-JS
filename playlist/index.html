@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+<body>
+<div class="player">
+<!-- Dashboard -->
+<div class="dashboard">
+  <!-- Header -->
+  <header>
+    <h4>Now playing:</h4>
+    <h2>String 57th & 9th</h2>
+  </header>
+      
+  <!-- CD -->
+  <div class="cd">
+    <div class="cd-thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+    </div>
+  </div>
+      
+          <!-- Control -->
+  <div class="control">
+    <div class="btn btn-repeat">
+      <i class="fas fa-redo"></i>
+    </div>
+    <div class="btn btn-prev">
+      <i class="fas fa-step-backward"></i>
+    </div>
+    <div class="btn btn-toggle-play">
+      <i class="fas fa-pause icon-pause"></i>
+      <i class="fas fa-play icon-play"></i>
+    </div>
+    <div class="btn btn-next">
+      <i class="fas fa-step-forward"></i>
+    </div>
+    <div class="btn btn-random">
+      <i class="fas fa-random"></i>
+    </div>
+  </div>
+      
+  <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+      
+  <audio id="audio" src=""></audio>
+</div>
+      
+        <!-- Playlist -->
+<div class="playlist">
+ 
+</div>
+      
+<script> 
+  const $ = document.querySelector.bind (document)
+  const $$ = document.querySelectorAll.bind(document)
+  const cd = $('.cd') 
+  const heading = $('header h2')
+  const cdThumb = $(".cd-thumb");
+  const audio = $('#audio')    
+  const playBtn = $(".btn-toggle-play");
+  const player = $('.player')
+  const prevBtn = $('.btn-prev')
+  const nextBtn = $('.btn-next')
+  const progress = $('#progress')
+    const app = {
+      currentIndex: 0,
+      isPlaying: false,
+      songs: [
+        {
+          name: 'Giá Như Ngày Đầu Đừng Nói Ra',
+          singer: 'ISSAC',
+          path: './assets/music/GIANHUngaydau.mp3',
+          image: './assets/img/issac.jpg'
+        },
+        {
+          name: 'Giá Như anh lặng im',
+          singer: 'Lou Hoàng',
+          path: './assets/music/gianhu.mp3',
+          image: './assets/img/louhoang.jpg'
+        },
+        {
+          name: 'Anh Mệt Rồi',
+          singer: 'Kun',
+          path: './assets/music/anhmetroi.mp3',
+          image: './assets/img/anhquanidol.jpg'
+        },
+        {
+          name: 'Chẳng Thể Tìm Được EM',
+          singer: 'TRẦN CƯỜNG',
+          path: './assets/music/changthe.mp3',
+          image: './assets/img/changthe.jpg'
+        },
+        {
+          name: 'Mãi Mãi Chẳng Thuộc Về Nhau',
+          singer: 'BROVIP',
+          path: './assets/music/MCTHUOC.mp3',
+          image: './assets/img/maichangthuocvenhau.jpg'
+        },
+        {
+          name: 'Beatifull life',
+          singer: 'Bro VIP',
+          path: './assets/music/BeautifulLife-AceofBase_4dyz.mp3',
+          image: './assets/img/beatifull.jfif'
+        },
+        {
+          name: 'Chạy Ngay Đi',
+          singer: 'MTP',
+          path: './assets/music/ChayNgayDi-SonTungMTP-5468704.mp3',
+          image: './assets/img/chayngaydi.jpg'
+        },
+        {
+          name: 'Chúng Ta Của Hiện Tại',
+          singer: 'MTP',
+          path: './assets/music/ChungTaCuaHienTaiTToxicRemix-SonTungMTP-6951324.mp3',
+          image: './assets/img/chungtacuahientai.jfif'
+        },
+        {
+          name: 'Cơn Mưa Ngang Qua ',
+          singer: 'MTP',
+          path: './assets/music/ConMuaNgangQua-SonTungMTP-2944936.mp3"',
+          image: './assets/img/conmua1.jfif'
+        },
+        {
+          name: 'Cơn Mưa Ngang Qua part 3',
+          singer: 'MTP',
+          path: './assets/music/ConMuaNgangQuapart3-MTP-2427879.mp3',
+          image: './assets/img/conmua3.jfif'
+        },
+        {
+          name: 'Cưới Thôi',
+          singer: 'Masew-BRay',
+          path: './assets/music/CuoiThoi-MasewMasiuBRayTAPVietNam-7085648.mp3',
+          image: './assets/img/cuoithoi.jfif'
+        },
+        {
+          name: 'Em Đừng Đi',
+          singer: 'MTP',
+          path: './assets/music/emdungdi.mp3',
+          image: './assets/img/emcuangayhomqua.jfif'
+        },
+        {
+          name: 'Khi Em Lớn',
+          singer: 'Orange HoangDung',
+          path: './assets/music/KhiEmLonOrinnRemix-OrangeHoangDungTheVoice-7011445.mp3',
+          image: './assets/img/khiemlon.jfif'
+        },
+        {
+          name: 'Lạ Lùng',
+          singer: 'MTP',
+          path: './assets/music/LaLung-Vu-4749614.mp3',
+          image: './assets/img/lalung.jfif'
+        },
+        {
+          name: 'Lặng Yên',
+          singer: 'Bùi Anh Tuấn',
+          path: './assets/music/LangYenLangYenDuoiVucSauOST-BuiAnhTuanAiPhuong-4859488.mp3',
+          image: './assets/img/buianhtuan.jpg'
+        },
+
+      ],
+      render: function() {
+        const htmls = this.songs.map(function(song) {
+          return `
+            <div class="song">
+              <div class="thumb" style="background-image: url('${song.image}')">
+              </div>
+              <div class="body">
+                <h3 class="title">${song.name}</h3>
+                <p class="author">${song.singer}</p>
+              </div>
+              <div class="option">
+                <i class="fas fa-ellipsis-h"></i>
+              </div>
+            </div> 
+          `     
+        })
+        $('.playlist').innerHTML = htmls.join('')
+      },
+      defineProperties: function(){
+        Object.defineProperty(this,'currentSong',{
+          get: function(){
+            return this.songs[this.currentIndex]
+          }
+        })
+      },
+      handleEvents: function(){
+        const _this = this
+        const cdWidth = cd.offsetWidth
+        document.onscroll = function() {
+          const scrollTop =  document.documentElement.scrollTop
+          const newCdWidth = cdWidth - scrollTop
+
+          cd.style.width = newCdWidth > 0 ? newCdWidth  + 'px' : 0
+          cd.style.opacity = newCdWidth / cdWidth
+        }
+        //xử lý dĩa quay dừng
+        const cdThumbAnimate = cdThumb.animate([{ transform: "rotate(360deg)" }], {
+            duration: 10000, // 10 seconds
+            iterations: Infinity
+        });
+        cdThumbAnimate.pause();
+        // Xử lý khi click play
+          playBtn.onclick = function () {
+              if (_this.isPlaying) {
+            audio.pause();
+              } else {
+            audio.play();
+            }
+          };
+
+        // Khi song được play
+           audio.onplay = function () {
+              _this.isPlaying = true;
+              player.classList.add("playing");
+              cdThumbAnimate.play();
+          };
+
+         // Khi song bị pause
+   
+          audio.onpause = function () {
+            _this.isPlaying = false;
+            player.classList.remove("playing");
+            cdThumbAnimate.pause();
+           };
+          // tua 
+          audio.ontimeupdate = function(){
+            if(audio.duration){
+                const progressPercent = Math.floor(console.log(audio.currentTime / audio.duration * 100))
+                progress.value = progressPercent
+            }
+            
+          };
+          //xu ly khi tua nhac
+          progress.onchange = function(e){
+            const seekTime =  audio.duration / 100 * e.target.value
+            audio.currentTime = seekTime
+          }
+          //khi next music
+          nextBtn.onclick = function(){
+            _this.nextSong()
+            audio.play()
+          }
+          // Khi prev music
+          prevBtn.onclick = function () {
+             if (_this.isRandom) {
+              _this.playRandomSong();
+              } else {
+              _this.prevSong();
+          }
+            audio.play();
+            _this.render();
+            _this.scrollToActiveSong();
+    };
+      },   
+
+
+      loadCurrentSong: function(){
+        
+
+        heading.textContent = this.currentSong.name
+        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
+        audio.src = this.currentSong.path
+
+        console.log(heading,cdThumb,audio)
+      },
+      nextSong: function(){
+        this.currentIndex++
+        if (this.currentIndex >= this.songs.lenght){
+            this.currentIndex = 0
+        }
+        this.loadCurrentSong()
+      },
+      prevSong: function(){
+        this.currentIndex--
+        if (this.currentIndex < 0 ){
+        this.currentIndex >= this.songs.lenght -1
+            
+        }
+        this.loadCurrentSong()
+      },
+        start: function() {
+          //định nghĩa các thuộc tính
+          this.defineProperties()
+          // lắng nghe/ xử lý các sự kiênj
+          this.handleEvents()
+          //tải thông tin bài hát đầu tiên khi chạy
+          this.loadCurrentSong()
+          //render playlist
+          this.render()
+        }
+          
+    }
+                
+  app.start()
+
+</script>
+
+</body>
+</html>
+
+
